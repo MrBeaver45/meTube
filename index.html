@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeTube</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-right: 1px solid #ccc;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+    }
+
+    .sidebar ul li {
+      padding: 10px 0;
+      font-size: 14px;
+      color: #555;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #f0f0f0;
+    }
+
+    .sidebar ul li i {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .header .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: #FF0000; 
+      margin-right: 20px; 
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      justify-content: center; 
+    }
+
+    .header input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 10px;
+      background-color: white; 
+    }
+
+    .header button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .header button i {
+      font-size: 18px;
+      color: #555;
+    }
+
+    .account-icon {
+      font-size: 30px;
+      color: #555;
+      cursor: pointer;
+    }
+
+    .videos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .video-card {
+      width: 300px;
+      background-color: #fff;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .video-thumbnail img {
+      width: 100%;
+      height: auto;
+    }
+
+    .video-info {
+      padding: 10px;
+    }
+
+    .video-title {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .video-meta {
+      color: #666;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fab fa-youtube"></i> MeTube
+    </div>
+    <div class="search-container">
+      <input type="text" placeholder="Введите запрос" id="search-input">
+      <button onclick="search()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <div class="account-icon">
+      <i class="fas fa-user-circle"></i>
+    </div>
+  </div>
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Меню</h2>
+      <ul>
+        <li onclick="navigateHome()">
+          <i class="fas fa-home"></i>
+          Головна
+        </li>
+        <li onclick="openShorts()">
+          <i class="fas fa-video"></i>
+          YouTube Shorts
+        </li>
+        <li onclick="openSubscriptions()">
+          <i class="fas fa-user-plus"></i>
+          Підписки
+        </li>
+        <li onclick="openChannel()">
+          <i class="fas fa-user-circle"></i>
+          Ваш канал
+        </li>
+        <li onclick="openHistory()">
+          <i class="fas fa-clock"></i>
+          Історія
+        </li>
+        <li onclick="openVideos()">
+          <i class="fas fa-folder-open"></i>
+          Ваші відео
+        </li>
+      </ul>
+
+      <h2>Підписки</h2>
+      <ul>
+        <li onclick="openSubscription('WAS')">
+          <i class="fas fa-user"></i>
+          WAS
+        </li>
+        <li onclick="openSubscription('TheDRZJ')">
+          <i class="fas fa-user"></i>
+          TheDRZJ
+        </li>
+        <li onclick="openSubscription('ROZETKA')">
+          <i class="fas fa-user"></i>
+          ROЗЕТКА
+        </li>
+        <li onclick="openSubscription('Алексей Макаренко')">
+          <i class="fas fa-user"></i>
+          Алексей Макаренко
+        </li>
+        <li onclick="openSubscription('Хащ')">
+          <i class="fas fa-user"></i>
+          Хащ
+        </li>
+        <li onclick="openSubscription('Клятий раціоналіст')">
+          <i class="fas fa-user"></i>
+          Клятий раціоналіст
+        </li>
+      </ul>
+    </div>
+    <!-- Contentik -->
+    <div class="content">
+      <h1>Рекомендації</h1>
+      <div class="videos">
+        <!-- Video Card 1 -->
+        <div class="video-card" onclick="playVideo('Відео 1')">
+          <div class="video-thumbnail">
+            <img src="images/mqdefault_6s.webp" alt="Thumbnail 1">
+          </div>
+          <div class="video-info">
+            <h2 class="video-title">ВАНЯ КУХАРЧУК В КЛУБІ ДИЛЕТАНТІВ #39</h2>
+            <p class="video-meta">1,1 млн. переглядів • 2 місяці тому</p>
+          </div>
+        </div>
+        <!-- Video Card 2 -->
+        <div class="video-card" onclick="playVideo('Відео 2')">
+          <div class="video-thumbnail">
+            <img src="images/5.png" alt="Thumbnail 2">
+          </div>
+          <div class="video-info">
+            <h2 class="video-title">Top 5 blyat</h2>
+            <p class="video-meta">1,4 млн. переглядів • 3 місяців тому</p>
+          </div>
+        </div>
+        <!-- Video Card 3 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+          <div class="video-thumbnail">
+            <img src="images/3.png" alt="Thumbnail 3">
+          </div>
+          <div class="video-info">
+            <h2 class="video-title">он признался что дрочил на неё</h2>
+            <p class="video-meta">77 тис. переглядів • 1 місяців тому</p>
+          </div>
+        </div>
+        <!-- Video Card 4 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/7.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">Ку-клукс-клан. Історія найбільшої расистської організації США</h2> 
+                <p class="video-meta">345 тис. переглядів • 6 місяців тому</p>
+            </div>
+        </div>
+        <!-- Video Card 5 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/2.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">СПЕЛЛЫ РИНГМАСТЕРА ИМБА НА РУБИКЕ - МИД РУБИК</h2> 
+                <p class="video-meta">92 тис. переглядів • 1 місяць тому</p>
+            </div>
+        </div>
+        <!-- Video Card 6 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/6.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">Дендии хук показывает мастерство хука</h2> 
+                <p class="video-meta">486 тис. переглядів • 1 рік тому</p>
+            </div>
+        </div>
+        <!-- Video Card 7 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/1.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">СТЕРЖЕНЬ! История "БЕСКОНЕЧНОГО ВЫЖИВАНИЯ" в РАСТ/RUST</h2> 
+                <p class="video-meta">2,2 млн. переглядів • 2 неділі тому</p>
+            </div>
+        </div>
+        <!-- Video Card 8 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/4.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">ПАРОВОЗИК РЕПРИНЦЕВ! ИМБА, которую НИКТО НЕ ИСПОЛЬЗУЕТ! раст rust</h2> 
+                <p class="video-meta">556 тис. переглядів • 1 місяць тому</p>
+            </div>
+        </div>
+        <!-- Video Card 9 -->
+        <div class="video-card" onclick="playVideo('Відео 3')">
+            <div class="video-thumbnail">
+                <img src="images/8.png" alt="Thumbnail 3">
+            </div>
+            <div class="video-info">
+                <h2 class="video-title">Лучшая реклама Шейкера дота 2</h2> 
+                <p class="video-meta">1,4 млн. переглядів • 2 рока тому</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+      function navigateHome() {
+        alert('Переход на Головну');
+      }
+  
+      function openShorts() {
+        alert('Відкривається YouTube Shorts');
+      }
+  
+      function openSubscriptions() {
+        alert('Відкриваються Підписки');
+      }
+  
+      function openChannel() {
+        alert('Відкривається Ваш канал');
+      }
+  
+      function openHistory() {
+        alert('Відкривається Історія переглядів');
+      }
+  
+      function openVideos() {
+        alert('Відкриваються Ваші відео');
+      }
+  
+      function openSubscription(channel) {
+        alert('Відкривається канал: ' + channel);
+      }
+  
+      function search() {
+        const query = document.getElementById('search-input').value;
+        if (query) {
+          alert('Шукаємо: ' + query);
+        } else {
+          alert('Будь ласка, введіть запит для пошуку.');
+        }
+      }
+  
+    </script>
+  </body>
+  </html>
+  
